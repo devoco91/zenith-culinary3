@@ -31,10 +31,10 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
-// GET all courses (public)
+// ✅ GET all courses (public) — sorted by newest first
 router.get('/', async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().sort({ createdAt: -1 }); // 🔥 sorted
     res.json(courses);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

@@ -25,8 +25,12 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password }),
             });
 
-            const data = await res.json();
-            console.log("Login response:", data);
+            let data = {};
+            try {
+                data = await res.json();
+            } catch (jsonError) {
+                throw new Error("Invalid JSON response");
+            }
 
             if (!res.ok) {
                 setError(data.message || "Login failed");
@@ -37,7 +41,7 @@ export default function LoginPage() {
                 setError("Invalid response from server");
             }
         } catch (err) {
-            setError("An unexpected error occurred");
+            setError(err.message || "An unexpected error occurred");
         } finally {
             setLoading(false);
         }
@@ -111,6 +115,7 @@ export default function LoginPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
+                                    aria-label="Toggle password visibility"
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                                 >
                                     {showPassword ? (
@@ -128,9 +133,9 @@ export default function LoginPage() {
                         </div>
 
                         <div className="text-right">
-                            <a href="#" className="text-sm text-red-600 hover:text-red-700 font-medium transition-colors">
+                            <Link href="/forgot-password" className="text-sm text-red-600 hover:text-red-700 font-medium transition-colors">
                                 Forgot password?
-                            </a>
+                            </Link>
                         </div>
 
                         <button
@@ -157,11 +162,8 @@ export default function LoginPage() {
 
                 <div className="text-center mt-6">
                     <p className="text-gray-600">
-                        Don't have an account? {" "}
-                        <Link 
-                            href="/signup" 
-                            className="text-red-600 font-semibold hover:text-red-700 transition-colors duration-200 hover:underline"
-                        >
+                        Don&apos;t have an account?{" "}
+                        <Link href="/signup" className="text-red-600 font-semibold hover:text-red-700 transition-colors duration-200 hover:underline">
                             Create one here
                         </Link>
                     </p>

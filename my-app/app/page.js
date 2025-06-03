@@ -31,6 +31,7 @@ export default function Home() {
       <Chef />
       <Gallery limit={6} />
       <Testimonials />
+      <Contact/>
     </div>
   );
 }

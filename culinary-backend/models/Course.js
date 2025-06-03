@@ -10,3 +10,4 @@ const courseSchema = new mongoose.Schema({
 
 // ✅ Prevent OverwriteModelError by checking if the model already exists
 module.exports = mongoose.models.Course || mongoose.model('Course', courseSchema);
+

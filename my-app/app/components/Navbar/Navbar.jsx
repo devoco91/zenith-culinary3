@@ -12,7 +12,6 @@ export default function Navbar() {
     // { name: 'Home', path: '/' },
     { name: 'About', path: '/about_us' },
     { name: 'Courses', path: '/courses' },
-    { name: 'Apply', path: '/apply' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Testimonials', path: '/testimonials' },
     { name: 'Contact', path: '/contact' },

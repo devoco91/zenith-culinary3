@@ -1,89 +1,185 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+const CourseManagement = () => {
+  const [courses, setCourses] = useState([]);
+  const [newCourseTitle, setNewCourseTitle] = useState('');
+  const [newCourseDescription, setNewCourseDescription] = useState('');
+  const [newCoursePrice, setNewCoursePrice] = useState('');
+  const [newCourseImage, setNewCourseImage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-// Lightbox is client-side only (sync not allowed in SSR)
-const Lightbox = dynamic(() => import('yet-another-react-lightbox'), { ssr: false });
-import 'yet-another-react-lightbox/styles.css';
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-export default function Gallery({ limit }) {
-  const [images, setImages] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
+  // Fetch all courses from backend
+  const fetchCourses = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/courses', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      console.log('Fetched courses:', data);
+      setCourses(data);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/gallery');
-        if (!response.ok) throw new Error('Failed to fetch images');
-        const data = await response.json();
-        setImages(data);
-      } catch (error) {
-        console.error('Error loading images:', error);
-        setImages([]);
-      }
-    };
-
-    fetchImages();
+    fetchCourses();
   }, []);
 
-  if (images === null) return <p>Loading images...</p>;
+  // Add new course
+  const addCourse = async () => {
+    if (!newCourseTitle.trim()) return;
 
-  const imagesToShow = limit ? images.slice(0, limit) : images;
-  const slides = images.map(img => ({ src: img.url }));
+    const newCourse = {
+      title: newCourseTitle.trim(),
+      description: newCourseDescription.trim(),
+      price: Number(newCoursePrice.trim()) || 0,
+      image: newCourseImage.trim(),
+    };
+
+    try {
+      const res = await fetch('http://localhost:5000/api/courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newCourse),
+      });
+
+      const savedCourse = await res.json();
+      console.log('Saved new course:', savedCourse);
+
+      const courseId = savedCourse.id || savedCourse._id;
+      if (!courseId) {
+        console.warn('Saved course missing id:', savedCourse);
+        return;
+      }
+
+      setCourses((prev) => [...prev, { ...savedCourse, id: courseId }]);
+
+      // Clear inputs
+      setNewCourseTitle('');
+      setNewCourseDescription('');
+      setNewCoursePrice('');
+      setNewCourseImage('');
+    } catch (error) {
+      console.error('Error adding course:', error);
+    }
+  };
+
+  // Delete a course
+  const deleteCourse = async (id) => {
+    if (!id) {
+      console.error('Cannot delete course without id');
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/courses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        setCourses((prev) => prev.filter((course) => (course.id || course._id) !== id));
+      } else {
+        console.error('Failed to delete course with id:', id);
+      }
+    } catch (error) {
+      console.error('Error deleting course:', error);
+    }
+  };
+
+  if (isLoading) return <p>Loading courses...</p>;
 
   return (
-    <section className="bg-gray-100 py-16">
-      <div className="w-[90%] mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold">
-            <span className="text-green-600">Gallery</span>{' '}
-            <span className="text-gray-800">Highlights</span>
-          </h2>
-          {limit && (
-            <a href="/gallery" className="text-green-600 font-semibold hover:underline">
-              View All
-            </a>
-          )}
-        </div>
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Manage Courses</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {imagesToShow.length > 0 ? (
-            imagesToShow.map((image, index) => (
-              <div
-                key={image._id}
-                className="overflow-hidden rounded-2xl shadow-lg group cursor-pointer"
-                onClick={() => {
-                  setPhotoIndex(index);
-                  setIsOpen(true);
-                }}
-              >
-                <img
-                  src={image.url}
-                  alt={image.title || `Gallery ${index}`}
-                  className="w-full h-[280px] object-cover transform group-hover:scale-105 transition duration-300 ease-in-out"
-                />
-                <p className="mt-2 text-center text-gray-700 font-medium">
-                  {image.title || 'Untitled'}
-                </p>
-              </div>
-            ))
-          ) : (
-            <p>No images to display.</p>
-          )}
-        </div>
+      {/* Add course form */}
+      <div className="mb-6 flex flex-col gap-2 max-w-md">
+        <input
+          type="text"
+          placeholder="Course Title"
+          className="p-2 border rounded"
+          value={newCourseTitle}
+          onChange={(e) => setNewCourseTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Course Description"
+          className="p-2 border rounded"
+          value={newCourseDescription}
+          onChange={(e) => setNewCourseDescription(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Course Price (e.g. 5000)"
+          className="p-2 border rounded"
+          value={newCoursePrice}
+          onChange={(e) => setNewCoursePrice(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Course Image URL"
+          className="p-2 border rounded"
+          value={newCourseImage}
+          onChange={(e) => setNewCourseImage(e.target.value)}
+        />
+        <button
+          onClick={addCourse}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 self-start"
+        >
+          Add Course
+        </button>
       </div>
 
-      {isOpen && (
-        <Lightbox
-          open={isOpen}
-          close={() => setIsOpen(false)}
-          slides={slides}
-          index={photoIndex}
-          on={{ view: ({ index }) => setPhotoIndex(index) }}
-        />
-      )}
-    </section>
+      {/* Courses list */}
+      <div className="space-y-4">
+        {courses.length > 0 ? (
+          courses.map((course) => {
+            const courseId = course.id || course._id;
+            if (!courseId) {
+              console.warn('Course missing id:', course);
+              return null;
+            }
+
+            return (
+              <div
+                key={courseId}
+                className="bg-white rounded shadow p-4 flex justify-between items-start"
+              >
+                <div>
+                  <h3 className="font-semibold text-lg">{course.title}</h3>
+                  <p className="text-sm text-gray-600">{course.description}</p>
+                  <p className="text-xs text-gray-500 mt-1">₦{course.price}</p>
+                </div>
+                <button
+                  onClick={() => deleteCourse(courseId)}
+                  className="text-red-600 hover:text-red-800"
+                  title="Delete Course"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <p>No courses available.</p>
+        )}
+      </div>
+    </div>
   );
-}
+};
+
+export default CourseManagement;
