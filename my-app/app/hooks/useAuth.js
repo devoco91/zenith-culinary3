@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = 'https://culinary-backend.fly.dev/api/auth';
 
 const useAuth = () => {
   const [user, setUser] = useState(null);

@@ -19,7 +19,7 @@ export default function ProfilePage() {
       }
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/profile", {
+        const res = await fetch("https://culinary-backend.fly.dev/api/auth/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

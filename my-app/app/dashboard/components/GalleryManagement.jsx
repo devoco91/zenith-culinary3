@@ -10,7 +10,7 @@ const GalleryManagement = () => {
 
   const fetchImages = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/gallery');
+      const res = await fetch('https://culinary-backend.fly.dev/api/gallery');
       const data = await res.json();
       setImages(data);
     } catch (error) {
@@ -28,7 +28,7 @@ const GalleryManagement = () => {
     if (!newImageUrl.trim()) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/gallery', {
+      const res = await fetch('https://culinary-backend.fly.dev/api/gallery', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const GalleryManagement = () => {
 
   const deleteImage = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/gallery/${id}`, {
+      const res = await fetch(`https://culinary-backend.fly.dev/api/gallery/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
