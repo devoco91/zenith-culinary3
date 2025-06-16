@@ -13,11 +13,13 @@ export default function Home() {
   useEffect(() => {
     const pingBackend = async () => {
       try {
-        const res = await fetch('http://localhost:5000/', { cache: 'no-store' });
+        const res = await fetch('https://culinary-backend.fly.dev/', {
+          cache: 'no-store'
+        });
         const text = await res.text();
-        console.log('Backend response:', text);
+        console.log('✅ Backend response:', text);
       } catch (err) {
-        console.error('Backend connection error:', err);
+        console.error('❌ Backend connection error:', err);
       }
     };
 
@@ -32,7 +34,7 @@ export default function Home() {
       {/* <Chef /> */}
       <Gallery limit={6} />
       <Testimonials />
-      <ContactPage/>
+      <ContactPage />
     </div>
   );
 }

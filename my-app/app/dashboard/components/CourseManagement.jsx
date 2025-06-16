@@ -11,7 +11,7 @@ const CourseManagement = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/courses');
+      const res = await fetch('https://culinary-backend.fly.dev/api/courses');
       const data = await res.json();
       setCourses(data);
     } catch (error) {
@@ -38,7 +38,7 @@ const CourseManagement = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch('http://localhost:5000/api/courses', {
+      const res = await fetch('https://culinary-backend.fly.dev/api/courses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const CourseManagement = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const res = await fetch(`http://localhost:5000/api/courses/${id}`, {
+      const res = await fetch(`https://culinary-backend.fly.dev/api/courses/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
