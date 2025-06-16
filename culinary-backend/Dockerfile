@@ -30,6 +30,7 @@ COPY . .
 FROM base AS runtime
 
 COPY --from=build /app /app
+COPY --from=build /app/node_modules /app/node_modules
 
 EXPOSE 3000
 
