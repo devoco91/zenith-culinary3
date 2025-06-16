@@ -1,41 +1,43 @@
 # syntax=docker/dockerfile:1
 
-# Stage 1: Base image
+# Stage 1: Base Node.js image
 ARG NODE_VERSION=20.13.1
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Node.js"
+
+# Set working directory
 WORKDIR /app
+
+# Set production environment
 ENV NODE_ENV=production
 
-# Stage 2: Build with dependencies
+# Stage 2: Build dependencies
 FROM base AS build
 
-# Install system deps for native builds (bcryptjs uses node-gyp)
+# Install OS packages for native builds
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    python-is-python3 \
+    node-gyp \
     pkg-config \
-    node-gyp && \
+    python-is-python3 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy lock + package for reproducible install
+# Copy package files and install dependencies
 COPY package*.json ./
+RUN npm install jsonwebtoken && npm ci
 
-# Install dependencies including bcryptjs
-RUN npm ci
-
-# Copy app source
+# Copy application source
 COPY . .
 
-# Stage 3: Runtime
+# Stage 3: Final runtime image
 FROM base AS runtime
 
-# Copy node_modules and source from build stage
+# Copy from build stage
 COPY --from=build /app /app
 
-# Expose app port
+# Expose application port
 EXPOSE 3000
 
 # Start command
