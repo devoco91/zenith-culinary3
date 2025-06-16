@@ -9,12 +9,10 @@ const CourseManagement = () => {
   const [newCourseImage, setNewCourseImage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch all courses from backend
   const fetchCourses = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/courses');
       const data = await res.json();
-      console.log('Fetched courses:', data);
       setCourses(data);
     } catch (error) {
       console.error('Error fetching courses:', error);
@@ -27,7 +25,6 @@ const CourseManagement = () => {
     fetchCourses();
   }, []);
 
-  // Add new course
   const addCourse = async () => {
     if (!newCourseTitle.trim()) return;
 
@@ -45,7 +42,7 @@ const CourseManagement = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newCourse),
       });
@@ -56,7 +53,6 @@ const CourseManagement = () => {
       }
 
       const savedCourse = await res.json();
-      console.log('Saved new course:', savedCourse);
       setCourses((prev) => [...prev, savedCourse]);
 
       setNewCourseTitle('');
@@ -69,7 +65,6 @@ const CourseManagement = () => {
     }
   };
 
-  // Delete a course
   const deleteCourse = async (id) => {
     const token = localStorage.getItem('token');
 
@@ -77,7 +72,7 @@ const CourseManagement = () => {
       const res = await fetch(`http://localhost:5000/api/courses/${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 

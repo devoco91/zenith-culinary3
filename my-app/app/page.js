@@ -7,6 +7,7 @@ import FeaturedCourses from "./courses/page";
 import Testimonials from "./testimonials/page";
 import Chef from "./dchefs/page";
 import Gallery from "./components/Gallery/page";
+import ContactPage from './contact/page';
 
 export default function Home() {
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function Home() {
       <Chef />
       <Gallery limit={6} />
       <Testimonials />
-      <Contact/>
+      <ContactPage/>
     </div>
   );
 }
