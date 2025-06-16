@@ -22,7 +22,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install jsonwebtoken bcryptjs && npm ci
 
 COPY . .
 
