@@ -6,7 +6,7 @@ import WhyChooseUs from "./why_choose_us/page";
 import FeaturedCourses from "./courses/page";
 import Testimonials from "./testimonials/page";
 import Chef from "./dchefs/page";
-import Gallery from "./components/Gallery/page";
+import Gallery from "./components/Gallery/Gallery";
 import ContactPage from './contact/page';
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
       <HeroSection />
       <WhyChooseUs />
       <FeaturedCourses />
-      <Chef />
+      {/* <Chef /> */}
       <Gallery limit={6} />
       <Testimonials />
       <ContactPage/>

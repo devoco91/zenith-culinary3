@@ -1,4 +1,3 @@
-// ✅ SignupPage.js (Full Working Component)
 'use client';
 
 import { useState, useEffect } from "react";

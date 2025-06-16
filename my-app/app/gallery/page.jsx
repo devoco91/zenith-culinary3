@@ -1,5 +1,10 @@
-import Gallery from './../components/Gallery/page';
+import Gallery from '../../components/Gallery/Gallery';
 
 export default function GalleryPage() {
-  return <Gallery />;
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-4 text-center">Gallery</h1>
+      <Gallery />
+    </div>
+  );
 }
