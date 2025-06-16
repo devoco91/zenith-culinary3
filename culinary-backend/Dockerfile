@@ -5,12 +5,10 @@ ARG NODE_VERSION=20.13.1
 FROM node:${NODE_VERSION}-slim AS base
 
 LABEL fly_launch_runtime="Node.js"
-
 WORKDIR /app
-
 ENV NODE_ENV=production
 
-# Stage 2: Build dependencies
+# Stage 2: Install dependencies & build
 FROM base AS build
 
 RUN apt-get update -qq && \
@@ -22,16 +20,17 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm ci && npm install jsonwebtoken bcryptjs
+RUN npm ci
 
 COPY . .
 
-# Stage 3: Final runtime image
+# Stage 3: Runtime container
 FROM base AS runtime
 
+# Copy only built app & deps
 COPY --from=build /app /app
 COPY --from=build /app/node_modules /app/node_modules
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
