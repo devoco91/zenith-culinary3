@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { ChevronDown, ChefHat, Award, DollarSign, Calendar, CheckCircle, ExternalLink } from 'lucide-react';
 
