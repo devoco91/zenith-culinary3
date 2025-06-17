@@ -38,7 +38,7 @@ const GalleryManagement = () => {
       });
 
       const data = await res.json();
-      setImages([...images, data.image]); // Fixed this line
+      setImages([...images, data.image]);
       setNewImageUrl('');
     } catch (error) {
       console.error('Error adding image:', error);
@@ -58,10 +58,10 @@ const GalleryManagement = () => {
       },
     });
 
-    const text = await res.text(); // capture raw response
+    const text = await res.text(); 
     console.log('Raw delete response:', text);
 
-    // Try parsing only if it's likely to be JSON
+    
     try {
       const result = JSON.parse(text);
       if (res.ok) {

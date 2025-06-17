@@ -33,9 +33,9 @@ export default function Home() {
       <WhyChooseUs />
       <FeaturedCourses />
       {/* <Chef /> */}
-      <Gallery limit={6} />
+      <Gallery limit={10} />
       <Testimonials />
-      <ContactPage />
+      {/* <ContactPage /> */}
       <FAQ/>
     </div>
   );

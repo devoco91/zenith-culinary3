@@ -6,9 +6,12 @@ import Image from 'next/image'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-
+  
   const toggleMenu = () => setIsOpen(!isOpen)
-
+  
+  // Function to close menu when a link is clicked
+  const closeMenu = () => setIsOpen(false)
+  
   const navLinks = [
     { name: 'About', path: '/about_us' },
     { name: 'Courses', path: '/courses' },
@@ -16,7 +19,7 @@ export default function Navbar() {
     { name: 'Testimonials', path: '/testimonials' },
     { name: 'Contact', path: '/contact' },
   ]
-
+  
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50 py-3">
       <div className="w-[90%] mx-auto flex items-center justify-between">
@@ -31,7 +34,7 @@ export default function Navbar() {
             className="h-12 w-auto object-contain"
           />
         </Link>
-
+        
         {/* Desktop Nav Links */}
         <div className="hidden md:flex justify-center flex-1 space-x-6 text-base font-semibold">
           {navLinks.map((link) => (
@@ -44,14 +47,14 @@ export default function Navbar() {
             </Link>
           ))}
         </div>
-
+        
         {/* CTA Button */}
         <div className="hidden md:flex">
-          <Link href="/enroll" className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold">
+          <Link href="/transaction" className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold">
             Enroll Now
           </Link>
         </div>
-
+        
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button onClick={toggleMenu}>
@@ -59,16 +62,25 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-
+      
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 text-base font-medium uppercase">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.path} className="block text-gray-700 hover:text-red-600 transition">
+            <Link 
+              key={link.name} 
+              href={link.path} 
+              className="block text-gray-700 hover:text-red-600 transition"
+              onClick={closeMenu} 
+            >
               {link.name}
             </Link>
           ))}
-          <Link href="/enroll" className="block bg-green-600 text-white px-4 py-2 text-center font-semibold">
+          <Link 
+            href="/enroll" 
+            className="block bg-green-600 text-white px-4 py-2 text-center font-semibold"
+            onClick={closeMenu} 
+          >
             Enroll Now
           </Link>
         </div>

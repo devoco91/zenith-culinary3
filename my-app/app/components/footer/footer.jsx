@@ -5,76 +5,84 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-gray-300 py-16">
-      <div className="w-[90%] max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Brand Section */}
-        <div>
-          <h2 className="text-3xl font-bold text-green-400 mb-4">Culinary's School</h2>
-          <p className="text-gray-400 leading-relaxed">
-            Bringing you the finest culinary experiences with passion and flavor.  
-            Join us and become a master chef in your own kitchen.
-          </p>
-          <div className="flex space-x-4 mt-6">
-            <a href="#" aria-label="Facebook" className="hover:text-green-400 transition">
-              <FaFacebookF size={20} />
-            </a>
-            <a href="#" aria-label="Twitter" className="hover:text-green-400 transition">
-              <FaTwitter size={20} />
-            </a>
-            <a href="#" aria-label="Instagram" className="hover:text-green-400 transition">
-              <FaInstagram size={20} />
-            </a>
-            <a href="#" aria-label="YouTube" className="hover:text-green-400 transition">
-              <FaYoutube size={20} />
-            </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1">
+            <h3 className="text-2xl font-bold mb-4">Zenith Culinary</h3>
+            <p className="text-gray-300 mb-4">
+              From the moment you call or message us, expect to begin a journey that you will love and be good at.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <FaFacebookF size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <FaTwitter size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <FaInstagram size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <FaYoutube size={20} />
+              </a>
+            </div>
           </div>
-        </div>
 
-        {/* Quick Links */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2">
-            <li><a href="/about" className="hover:text-green-400 transition">About Us</a></li>
-            <li><a href="/courses" className="hover:text-green-400 transition">Courses</a></li>
-            <li><a href="/blog" className="hover:text-green-400 transition">Blog</a></li>
-            <li><a href="/contact" className="hover:text-green-400 transition">Contact</a></li>
-            <li><a href="/faq" className="hover:text-green-400 transition">FAQ</a></li>
-          </ul>
-        </div>
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">About Us</a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Courses</a>
+              </li>
+              
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a>
+              </li>
+            </ul>
+          </div>
 
-        {/* Contact Info */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Contact</h3>
-          <p>123 Culinary Street</p>
-          <p>Foodville, FL 45678</p>
-          <p>Email: <a href="mailto:info@cheflola.com" className="hover:text-green-400 transition">info@Culinary's School.com</a></p>
-          <p>Phone: <a href="tel:+1234567890" className="hover:text-green-400 transition">+1 234 567 890</a></p>
-        </div>
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Get In Touch</h4>
+            <div className="space-y-2 text-gray-300">
+              <p>114, Iju road, church bus stop,</p>
+              <p>Agege-Lagos</p>
+              <p>Email: learn@zenithculinary.com</p>
+            </div>
+          </div>
 
-        {/* Newsletter Mini Signup */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Stay Updated</h3>
-          <p className="mb-4">Subscribe to get the latest recipes and offers</p>
-          <form className="flex flex-col sm:flex-row gap-4">
-            <input
-              type="email"
-              placeholder="Your email"
-              className="px-4 py-3 rounded-full text-gray-900 focus:outline-none flex-grow"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full transition"
-            >
-              Subscribe
-            </button>
-          </form>
+          {/* Newsletter Mini Signup */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Stay Updated</h4>
+            <p className="text-gray-300 mb-4">Subscribe to get the latest recipes and offers</p>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button className="px-4 py-2 bg-[#00C951] hover:bg-[#00C951] rounded-r-md transition-colors">
+                Subscribe
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="mt-16 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} Culinary's School. All rights reserved.
+      <div className="border-t border-gray-800 py-4">
+        <div className="max-w-7xl mx-auto px-4 text-center text-gray-400">
+          © {new Date().getFullYear()} Zenith Culinary. All rights reserved.
+        </div>
       </div>
     </footer>
   );
