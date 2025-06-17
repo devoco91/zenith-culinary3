@@ -1,11 +1,38 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import featuredCourses from '../../data/courses';
 
 export default function CourseDetails() {
   const { id } = useParams();
-  const course = featuredCourses.find(course => course.id === id);
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const res = await fetch(`https://culinary-backend.fly.dev/api/courses/${id}`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setCourse(data);
+        } else {
+          setCourse(null);
+        }
+      } catch (error) {
+        console.error('Error fetching course:', error);
+        setCourse(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchCourse();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center py-10">Loading course...</p>;
+  }
 
   if (!course) {
     return (
@@ -30,22 +57,22 @@ export default function CourseDetails() {
         <div className="flex flex-wrap gap-10 text-gray-700 mb-10">
           <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Duration:</span>
-            <span className="text-green-700 font-medium">{course.duration}</span>
+            <span className="text-green-700 font-medium">{course.duration || 'Not specified'}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Level:</span>
-            <span className="text-green-700 font-medium">{course.level}</span>
+            <span className="text-green-700 font-medium">{course.level || 'Beginner'}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Price:</span>
-            <span className="text-green-700 font-bold text-2xl">₦{course.amount.toLocaleString()}</span>
+            <span className="text-green-700 font-bold text-2xl">₦{course.price.toLocaleString()}</span>
           </div>
         </div>
 
         <p className="text-gray-800 text-lg leading-relaxed mb-12">
-          Learn everything you need to become an expert in <strong>{course.title}</strong>. This course offers hands-on experience and practical lessons to sharpen your skills and boost your culinary expertise.
+          {course.description || `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`}
         </p>
 
         <a

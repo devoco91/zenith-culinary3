@@ -8,6 +8,7 @@ import Testimonials from "./testimonials/page";
 import Chef from "./dchefs/page";
 import Gallery from "./components/Gallery/Gallery";
 import ContactPage from './contact/page';
+import FAQ from './faq/page'
 
 export default function Home() {
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Home() {
       <Gallery limit={6} />
       <Testimonials />
       <ContactPage />
+      <FAQ/>
     </div>
   );
 }

@@ -29,4 +29,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// DELETE - Delete a gallery image by ID
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedImage = await Gallery.findByIdAndDelete(id);
+
+    if (!deletedImage) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    res.json({ message: 'Image deleted successfully', image: deletedImage });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 module.exports = router;

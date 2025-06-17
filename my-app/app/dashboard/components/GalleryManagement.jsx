@@ -38,29 +38,47 @@ const GalleryManagement = () => {
       });
 
       const data = await res.json();
-      setImages([...images, data]);
+      setImages([...images, data.image]); // Fixed this line
       setNewImageUrl('');
     } catch (error) {
       console.error('Error adding image:', error);
     }
   };
 
-  const deleteImage = async (id) => {
-    try {
-      const res = await fetch(`https://culinary-backend.fly.dev/api/gallery/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+ const deleteImage = async (id) => {
+  const confirmDelete = window.confirm('Are you sure you want to delete this image?');
+  if (!confirmDelete) return;
 
+  try {
+    const res = await fetch(`https://culinary-backend.fly.dev/api/gallery/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const text = await res.text(); // capture raw response
+    console.log('Raw delete response:', text);
+
+    // Try parsing only if it's likely to be JSON
+    try {
+      const result = JSON.parse(text);
       if (res.ok) {
         setImages(images.filter((img) => img._id !== id));
+        alert('Image deleted successfully');
+      } else {
+        alert(`Failed to delete image: ${result.message}`);
       }
-    } catch (error) {
-      console.error('Error deleting image:', error);
+    } catch (err) {
+      console.error('Not JSON:', text);
+      alert('Failed to delete image. Server did not return valid JSON.');
     }
-  };
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    alert('An error occurred while deleting the image.');
+  }
+};
 
   if (isLoading) return <p>Loading gallery...</p>;
 
