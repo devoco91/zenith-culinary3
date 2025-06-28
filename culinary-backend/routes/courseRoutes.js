@@ -4,7 +4,7 @@ const authenticateToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// POST a new course (admin only)
+// ✅ POST a new course (admin only)
 router.post('/', authenticateToken, async (req, res) => {
   if (!req.user.isAdmin) {
     return res.status(403).json({ message: 'Admin access required' });
@@ -34,14 +34,14 @@ router.post('/', authenticateToken, async (req, res) => {
 // ✅ GET all courses (public) — sorted by newest first
 router.get('/', async (req, res) => {
   try {
-    const courses = await Course.find().sort({ createdAt: -1 }); // 🔥 sorted
+    const courses = await Course.find().sort({ updatedAt: -1 }); // ✅ show latest updated first
     res.json(courses);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// GET one course by ID (public)
+// ✅ GET one course by ID (public)
 router.get('/:id', async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
@@ -56,14 +56,21 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// UPDATE a course by ID (admin only)
+// ✅ UPDATE a course by ID (admin only)
 router.put('/:id', authenticateToken, async (req, res) => {
   if (!req.user.isAdmin) {
     return res.status(403).json({ message: 'Admin access required' });
   }
 
   try {
-    const updatedCourse = await Course.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedCourse = await Course.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+        updatedAt: new Date(), // ✅ force update timestamp
+      },
+      { new: true }
+    );
 
     if (!updatedCourse) {
       return res.status(404).json({ message: 'Course not found' });
@@ -75,7 +82,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// DELETE a course by ID (admin only)
+// ✅ DELETE a course by ID (admin only)
 router.delete('/:id', authenticateToken, async (req, res) => {
   if (!req.user.isAdmin) {
     return res.status(403).json({ message: 'Admin access required' });

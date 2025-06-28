@@ -11,7 +11,9 @@ export default function CourseDetails() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await fetch(`https://culinary-backend.fly.dev/api/courses/${id}`);
+        const res = await fetch(`https://culinary-backend.fly.dev/api/courses/${id}`, {
+          cache: 'no-store' // ✅ disables caching so you always get fresh data
+        });
         const data = await res.json();
 
         if (res.ok) {
@@ -67,12 +69,15 @@ export default function CourseDetails() {
 
           <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Price:</span>
-            <span className="text-green-700 font-bold text-2xl">₦{course.price.toLocaleString()}</span>
+            <span className="text-green-700 font-bold text-2xl">
+              ₦{course.price.toLocaleString()}
+            </span>
           </div>
         </div>
 
         <p className="text-gray-800 text-lg leading-relaxed mb-12">
-          {course.description || `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`}
+          {course.description ||
+            `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`}
         </p>
 
         <a

@@ -24,14 +24,14 @@ export default function Navbar() {
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50 py-3">
       <div className="w-[90%] mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0">
+        <Link href="/" className="flex-shrink-0 relative z-10 h-12 flex items-center">
           <Image
             src="/LASOP_png_for_culinary-removebg-preview.png"
             alt="Zenith Culinary Logo"
-            width={150}
-            height={50}
+            width={400}
+            height={80}
             priority
-            className="h-12 w-auto object-contain"
+            className="h-20 w-auto object-contain"
           />
         </Link>
         

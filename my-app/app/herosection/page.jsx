@@ -3,9 +3,10 @@ import Link from 'next/link';
 export default function HeroSection() {
     return (
         <section
-            className="relative h-screen w-full bg-cover bg-center flex items-center justify-center"
+            className="relative h-screen w-full bg-cover flex items-center justify-center"
             style={{
-                backgroundImage: "url('./food2.jpg')"
+                backgroundImage: "url('./food2.jpg')",
+                backgroundPosition: "center top"
             }}
         >
             {/* Dark overlay */}

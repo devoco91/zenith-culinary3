@@ -10,7 +10,7 @@ const Gallery = ({ limit }) => {
       const res = await fetch('https://culinary-backend.fly.dev/api/gallery');
       const data = await res.json();
 
-      // Apply limit if passed
+      
       if (limit) {
         setImages(data.slice(0, limit));
       } else {
