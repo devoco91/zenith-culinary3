@@ -50,8 +50,8 @@ export default function Navbar() {
         
         {/* CTA Button */}
         <div className="hidden md:flex">
-          <Link href="/transaction" className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold">
-            Enroll Now
+          <Link href="/signup" className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold">
+            Sign Up
           </Link>
         </div>
         

@@ -1,11 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import featuredCourses from '../data/courses';
 
 const TransactionPage = () => {
-
-    const [selectedCourse, setSelectedCourse] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -32,14 +29,6 @@ const TransactionPage = () => {
         });
     };
 
-
-    const handleCourseSelect = (course) => {
-        setSelectedCourse(course);
-        setCurrentStep(2);
-        window.scrollTo(0, 0);
-    };
-
-  
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
         window.scrollTo(0, 0);
@@ -53,78 +42,11 @@ const TransactionPage = () => {
     // Submit the transaction
     const handleSubmit = (e) => {
         e.preventDefault();
-        setCurrentStep(4);
+        setCurrentStep(3);
         window.scrollTo(0, 0);
     };
 
-   
-    const calculateTotal = () => {
-        if (!selectedCourse) return 0;
-        const price = selectedCourse.amount || selectedCourse.price || selectedCourse.cost || 0;
-        const discount = selectedCourse.discount || selectedCourse.discountAmount || 0;
-        return price - discount;
-    };
-
-    const getOriginalPrice = () => {
-        if (!selectedCourse) return 0;
-        return selectedCourse.amount || selectedCourse.price || selectedCourse.cost || 0;
-    };
-
-    // Step 1: Course Selection
-    const renderCourseSelection = () => (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Select a Course</h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {featuredCourses.map((course) => (
-                    <div
-                        key={course.id}
-                        className={`border rounded-lg overflow-hidden hover:shadow-md transition-all cursor-pointer ${selectedCourse?.id === course.id
-                                ? 'border-green-500 ring-2 ring-green-500'
-                                : 'border-gray-200'
-                            }`}
-                        onClick={() => handleCourseSelect(course)}
-                    >
-                        <div className="relative h-48">
-                            <img
-                                src={course.image || "/api/placeholder/400/300"}
-                                alt={course.title}
-                                className="w-full h-full object-cover"
-                            />
-                            {(course.discount || course.discountAmount || 0) > 0 && (
-                                <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                                    SAVE ${course.discount || course.discountAmount}
-                                </span>
-                            )}
-                        </div>
-                        <div className="p-4">
-                            <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
-                            <div className="text-sm text-gray-600 mb-2">
-                                {course.duration} | Starts {course.startDate}
-                            </div>
-                            <div className="flex items-baseline">
-                                {(course.discount || course.discountAmount || 0) > 0 ? (
-                                    <>
-                                        <span className="text-lg font-bold text-green-600">
-                                            ${(course.amount || course.price || course.cost || 0) - (course.discount || course.discountAmount || 0)}
-                                        </span>
-                                        <span className="text-sm text-gray-500 line-through ml-2">
-                                            ${course.amount || course.price || course.cost || 0}
-                                        </span>
-                                    </>
-                                ) : (
-                                    <span className="text-lg font-bold text-green-600">
-                                        ${course.amount || course.price || course.cost || 0}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-
-    // Step 2: Student Information
+    // Step 1: Student Information
     const renderStudentInformation = () => (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Information</h2>
@@ -220,14 +142,7 @@ const TransactionPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-between mt-8">
-                <button
-                    type="button"
-                    onClick={handlePrevStep}
-                    className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                >
-                    Back
-                </button>
+            <div className="flex justify-end mt-8">
                 <button
                     type="button"
                     onClick={handleNextStep}
@@ -239,7 +154,7 @@ const TransactionPage = () => {
         </div>
     );
 
-    // Step 3: Payment Information
+    // Step 2: Payment Information
     const renderPaymentInformation = () => (
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Payment Information</h2>
@@ -352,7 +267,7 @@ const TransactionPage = () => {
         </form>
     );
 
-    // Step 4: Confirmation
+    // Step 3: Confirmation
     const renderConfirmation = () => (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -362,43 +277,29 @@ const TransactionPage = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Payment Successful!</h2>
             <p className="text-gray-600 mb-8">
-                Thank you for enrolling in {selectedCourse?.title}. We've sent a confirmation email to {formData.email} with all the details.
+                Thank you for your enrollment. We've sent a confirmation email to {formData.email} with all the details.
             </p>
             <div className="bg-gray-50 rounded-lg p-6 mb-8">
                 <h3 className="font-semibold text-lg mb-4">Order Summary</h3>
                 <div className="flex justify-between mb-2">
-                    <span>Course:</span>
-                    <span>{selectedCourse?.title}</span>
+                    <span>Student Name:</span>
+                    <span>{formData.firstName} {formData.lastName}</span>
                 </div>
                 <div className="flex justify-between mb-2">
-                    <span>Start Date:</span>
-                    <span>{selectedCourse?.startDate}</span>
+                    <span>Email:</span>
+                    <span>{formData.email}</span>
                 </div>
                 <div className="flex justify-between mb-2">
-                    <span>Duration:</span>
-                    <span>{selectedCourse?.duration}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                    <span>Original Price:</span>
-                    <span>${getOriginalPrice()}</span>
-                </div>
-                {(selectedCourse?.discount || selectedCourse?.discountAmount || 0) > 0 && (
-                    <div className="flex justify-between mb-2 text-green-600">
-                        <span>Discount:</span>
-                        <span>-${selectedCourse?.discount || selectedCourse?.discountAmount}</span>
-                    </div>
-                )}
-                <div className="flex justify-between font-semibold text-lg pt-2 border-t mt-2">
-                    <span>Total:</span>
-                    <span>${calculateTotal()}</span>
+                    <span>Phone:</span>
+                    <span>{formData.phone}</span>
                 </div>
             </div>
             <p className="text-gray-600 mb-6">
-                Your enrollment has been confirmed. We're looking forward to seeing you in class!
+                Your enrollment has been confirmed. We're looking forward to seeing you!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/my-courses" className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                    View My Courses
+                    View Dashboard
                 </Link>
                 <Link href="/" className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                     Return to Homepage
@@ -407,67 +308,16 @@ const TransactionPage = () => {
         </div>
     );
 
-    // Order Summary (sidebar)
-    const renderOrderSummary = () => (
-        <div className="bg-white rounded-lg shadow-lg p-6 h-fit sticky top-8">
-            <h2 className="text-lg font-bold text-gray-800 mb-4">Order Summary</h2>
-            <div className="border-t border-gray-200 pt-4">
-                <div className="flex items-center mb-4">
-                    <img
-                        src={selectedCourse?.image || "/api/placeholder/80/80"}
-                        alt={selectedCourse?.title}
-                        className="w-16 h-16 object-cover rounded"
-                    />
-                    <div className="ml-4">
-                        <h3 className="font-medium">{selectedCourse?.title}</h3>
-                        <p className="text-sm text-gray-600">{selectedCourse?.duration}</p>
-                    </div>
-                </div>
-                <div className="space-y-3 mb-4">
-                    <div className="flex justify-between">
-                        <span className="text-gray-600">Original Price</span>
-                        <span>${getOriginalPrice()}</span>
-                    </div>
-                    {(selectedCourse?.discount || selectedCourse?.discountAmount || 0) > 0 && (
-                        <div className="flex justify-between text-green-600">
-                            <span>Discount</span>
-                            <span>-${selectedCourse?.discount || selectedCourse?.discountAmount}</span>
-                        </div>
-                    )}
-                    <div className="border-t pt-2 flex justify-between font-semibold">
-                        <span>Total</span>
-                        <span>${calculateTotal()}</span>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4 text-sm text-gray-600">
-                <p className="flex items-center mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    Secure payment
-                </p>
-                <p className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Money-back guarantee
-                </p>
-            </div>
-        </div>
-    );
-
     const renderProgressSteps = () => {
         const steps = [
-            { number: 1, title: "Course" },
-            { number: 2, title: "Information" },
-            { number: 3, title: "Payment" },
-            { number: 4, title: "Confirmation" },
+            { number: 1, title: "Information" },
+            { number: 2, title: "Payment" },
+            { number: 3, title: "Confirmation" },
         ];
 
         return (
             <div className="w-full py-6">
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                     {steps.map((step, index) => (
                         <React.Fragment key={step.number}>
                             {/* Step indicator */}
@@ -484,14 +334,14 @@ const TransactionPage = () => {
                                         step.number
                                     )}
                                 </div>
-                                <div className="absolute top-0 -ml-10 text-center w-32 text-xs font-medium">
+                                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-center text-xs font-medium whitespace-nowrap">
                                     {step.title}
                                 </div>
                             </div>
 
                             {/* Connector line */}
                             {index < steps.length - 1 && (
-                                <div className="flex-auto border-t border-gray-300 mx-1">
+                                <div className="flex-auto border-t-2 border-gray-300 mx-6">
                                     <div className={`border-t-2 ${currentStep > step.number ? "border-green-600" : "border-transparent"
                                         }`}></div>
                                 </div>
@@ -503,34 +353,21 @@ const TransactionPage = () => {
         );
     };
 
-    // Main render function
+    
     return (
         <div className="bg-gray-50 min-h-screen py-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h1 className="text-3xl font-bold text-gray-800">Enrollment & Payment</h1>
-                    <p className="text-gray-600 mt-2">Complete your enrollment to begin your culinary journey</p>
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12 pt-16">
+                    <h1 className="text-3xl font-bold text-gray-800">Enrolment & Payment</h1>
+                    <p className="text-gray-600 mt-2">Complete your enrolment to begin your journey</p>
                 </div>
 
                 {renderProgressSteps()}
 
-                <div className="mt-8">
-                    {currentStep < 4 && selectedCourse ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div className="lg:col-span-2">
-                                {currentStep === 1 && renderCourseSelection()}
-                                {currentStep === 2 && renderStudentInformation()}
-                                {currentStep === 3 && renderPaymentInformation()}
-                            </div>
-                            <div className="lg:col-span-1">
-                                {renderOrderSummary()}
-                            </div>
-                        </div>
-                    ) : currentStep === 1 ? (
-                        renderCourseSelection()
-                    ) : (
-                        renderConfirmation()
-                    )}
+                <div className="mt-16">
+                    {currentStep === 1 && renderStudentInformation()}
+                    {currentStep === 2 && renderPaymentInformation()}
+                    {currentStep === 3 && renderConfirmation()}
                 </div>
             </div>
         </div>

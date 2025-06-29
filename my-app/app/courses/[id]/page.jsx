@@ -12,7 +12,7 @@ export default function CourseDetails() {
     const fetchCourse = async () => {
       try {
         const res = await fetch(`https://culinary-backend.fly.dev/api/courses/${id}`, {
-          cache: 'no-store' // ✅ disables caching so you always get fresh data
+          cache: 'no-store',
         });
         const data = await res.json();
 
@@ -58,11 +58,6 @@ export default function CourseDetails() {
 
         <div className="flex flex-wrap gap-10 text-gray-700 mb-10">
           <div className="flex items-center gap-3">
-            <span className="font-semibold text-lg">Duration:</span>
-            <span className="text-green-700 font-medium">{course.duration || 'Not specified'}</span>
-          </div>
-
-          <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Level:</span>
             <span className="text-green-700 font-medium">{course.level || 'Beginner'}</span>
           </div>
@@ -70,15 +65,19 @@ export default function CourseDetails() {
           <div className="flex items-center gap-3">
             <span className="font-semibold text-lg">Price:</span>
             <span className="text-green-700 font-bold text-2xl">
-              ₦{course.price.toLocaleString()}
+              ₦{course.price?.toLocaleString?.() || '0'}
             </span>
           </div>
         </div>
 
-        <p className="text-gray-800 text-lg leading-relaxed mb-12">
-          {course.description ||
-            `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`}
-        </p>
+        {/* ✅ Description now justified and respects line breaks */}
+        <div
+          className="text-gray-800 text-lg leading-relaxed mb-12 text-justify whitespace-pre-line"
+          dangerouslySetInnerHTML={{
+            __html: course.description?.replace(/\n/g, '<br />') ||
+              `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`,
+          }}
+        />
 
         <a
           href="/transaction"

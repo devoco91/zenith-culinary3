@@ -201,7 +201,7 @@ export default function WazobiaFAQ() {
               Transform your passion for cooking into a rewarding career. Join the next generation of professional chefs!
             </p>
             <a 
-              href="https://www.wazobiaculinary.com/apply" 
+              href="/transaction" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"

@@ -12,7 +12,6 @@ export default function FeaturedCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch courses from backend with enhanced cache busting
   const fetchCourses = async () => {
     setLoading(true);
     try {
@@ -25,18 +24,17 @@ export default function FeaturedCourses() {
         },
         cache: 'no-store',
       });
-      
+
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
-      
+
       const data = await res.json();
       console.log('✅ Fetched from backend:', data);
-      console.log('📊 Number of courses:', data.length);
+      // console.log('📊 Number of courses:', data.length);
       setCourses(data);
     } catch (err) {
       console.error('❌ Failed to load courses:', err);
-      // Optionally set an error state here
     } finally {
       setLoading(false);
     }
@@ -46,7 +44,6 @@ export default function FeaturedCourses() {
     fetchCourses();
   }, []);
 
-  // Add a refresh function that can be called manually if needed
   const refreshCourses = () => {
     console.log('🔄 Manually refreshing courses...');
     fetchCourses();
@@ -65,15 +62,6 @@ export default function FeaturedCourses() {
               Explore our handpicked culinary courses to elevate your skills.
             </p>
           </div>
-          
-          {/* Optional: Add a manual refresh button for testing */}
-          <button
-            onClick={refreshCourses}
-            className="hidden md:block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200"
-            title="Refresh courses"
-          >
-            🔄 Refresh
-          </button>
         </div>
 
         {loading ? (
@@ -109,9 +97,7 @@ export default function FeaturedCourses() {
           </div>
         ) : (
           <>
-            <div className="mb-4 text-sm text-gray-500">
-              Showing {courses.length} course{courses.length !== 1 ? 's' : ''}
-            </div>
+            
             <Swiper
               modules={[Autoplay]}
               autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -122,7 +108,7 @@ export default function FeaturedCourses() {
                 768: { slidesPerView: 3 },
                 1024: { slidesPerView: 4 },
               }}
-              loop={courses.length > 4} // Only loop if there are enough courses
+              loop={courses.length > 4}
             >
               {courses.map((course) => (
                 <SwiperSlide key={`${course._id}-${course.updatedAt || Date.now()}`}>
@@ -133,7 +119,8 @@ export default function FeaturedCourses() {
                         alt={course.title}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvdXJzZSBJbWFnZTwvdGV4dD48L3N2Zz4=';
+                          e.target.src =
+                            'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OTk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvdXJzZSBJbWFnZTwvdGV4dD48L3N2Zz4=';
                         }}
                       />
                     </div>
@@ -141,10 +128,10 @@ export default function FeaturedCourses() {
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">
                         {course.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <p className="text-sm text-gray-600 mb-1">
                         ₦{typeof course.price === 'number' ? course.price.toLocaleString() : course.price}
                       </p>
-                      <p className="text-xs text-gray-400 mb-3">
+                      <p className="text-xs text-gray-400 mb-2">
                         {course.createdAt ? new Date(course.createdAt).toLocaleDateString() : 'Recently added'}
                       </p>
                       <Link
