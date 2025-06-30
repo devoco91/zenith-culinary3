@@ -44,6 +44,13 @@ export default function CourseDetails() {
     );
   }
 
+  // Build the URL with course info as query parameters
+  const transactionURL = `/transaction?courseId=${course._id}&courseTitle=${encodeURIComponent(
+    course.title
+  )}&coursePrice=${course.price}&courseDuration=${course.duration || ''}&courseStartDate=${
+    course.startDate || ''
+  }&courseDiscount=${course.discount || 0}`;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-50 py-24 px-4 sm:px-6 lg:px-8 flex justify-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-10">
@@ -70,17 +77,18 @@ export default function CourseDetails() {
           </div>
         </div>
 
-        {/* ✅ Description now justified and respects line breaks */}
         <div
           className="text-gray-800 text-lg leading-relaxed mb-12 text-justify whitespace-pre-line"
           dangerouslySetInnerHTML={{
-            __html: course.description?.replace(/\n/g, '<br />') ||
+            __html:
+              course.description?.replace(/\n/g, '<br />') ||
               `Learn everything you need to become an expert in ${course.title}. This course offers hands-on experience and practical lessons to sharpen your skills.`,
           }}
         />
 
+        {/* ✅ Updated Enroll button with query parameters */}
         <a
-          href="/transaction"
+          href={transactionURL}
           className="inline-block bg-green-600 text-white font-semibold py-4 px-14 rounded-xl shadow-xl hover:bg-green-700 transition transform hover:scale-105 text-center"
         >
           Enroll Now

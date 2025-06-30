@@ -31,7 +31,7 @@ export default function FeaturedCourses() {
 
       const data = await res.json();
       console.log('✅ Fetched from backend:', data);
-      // console.log('📊 Number of courses:', data.length);
+      console.log('📊 Number of courses:', data.length);
       setCourses(data);
     } catch (err) {
       console.error('❌ Failed to load courses:', err);
@@ -97,7 +97,9 @@ export default function FeaturedCourses() {
           </div>
         ) : (
           <>
-            
+            <div className="mb-4 text-sm text-gray-500">
+              Showing {courses.length} course{courses.length !== 1 ? 's' : ''}
+            </div>
             <Swiper
               modules={[Autoplay]}
               autoplay={{ delay: 3000, disableOnInteraction: false }}

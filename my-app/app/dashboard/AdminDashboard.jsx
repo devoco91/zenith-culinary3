@@ -4,6 +4,7 @@ import { BookOpen, ImageIcon, FileText, LogOut, Menu } from 'lucide-react';
 import useAuth from './../hooks/useAuth'; 
 import { useRouter } from 'next/navigation';
 
+import StudentApplications from './components/StudentApplications';
 import CourseManagement from './components/CourseManagement';
 import GalleryManagement from './components/GalleryManagement';
 import SyllabusManagement from './components/SyllabusManagement';
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
     { id: 'courses', label: 'Courses', icon: BookOpen, component: CourseManagement },
     { id: 'gallery', label: 'Gallery', icon: ImageIcon, component: GalleryManagement },
     { id: 'syllabus', label: 'Syllabus', icon: FileText, component: SyllabusManagement },
+     { id: 'applications', label: 'Applications', icon: FileText, component: StudentApplications }
   ];
 
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;

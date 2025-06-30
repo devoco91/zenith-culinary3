@@ -14,11 +14,27 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET: Admin can view all applications
+// GET: Admin can view all student applications (with course info only)
 router.get('/', async (req, res) => {
   try {
     const transactions = await Transaction.find().sort({ createdAt: -1 });
-    res.json(transactions);
+
+    const formatted = transactions.map(tx => ({
+      _id: tx._id,
+      firstName: tx.firstName,
+      lastName: tx.lastName,
+      email: tx.email,
+      phone: tx.phone,
+      courseId: tx.courseId,
+      courseTitle: tx.courseTitle,
+      courseStartDate: tx.courseStartDate,
+      courseDuration: tx.courseDuration,
+      coursePrice: tx.coursePrice,
+      courseDiscount: tx.courseDiscount,
+      createdAt: tx.createdAt,
+    }));
+
+    res.json(formatted);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch transactions', error: error.message });
   }
