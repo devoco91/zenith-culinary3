@@ -1,9 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-const TransactionPage = () => {
+const TransactionPageInner = () => {
     const searchParams = useSearchParams();
     const [currentStep, setCurrentStep] = useState(1);
 
@@ -91,15 +91,7 @@ const TransactionPage = () => {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Student Information</h2>
             <div className="grid gap-6 md:grid-cols-2">
-                {[
-                    ['First Name', 'firstName'],
-                    ['Last Name', 'lastName'],
-                    ['Email Address', 'email'],
-                    ['Address', 'address', 2],
-                    ['City', 'city'],
-                    ['State', 'state'],
-                    ['Zip Code', 'zipCode'],
-                ].map(([label, name, span], idx) => (
+                {[['First Name', 'firstName'], ['Last Name', 'lastName'], ['Email Address', 'email'], ['Address', 'address', 2], ['City', 'city'], ['State', 'state'], ['Zip Code', 'zipCode']].map(([label, name, span], idx) => (
                     <div key={idx} className={span === 2 ? 'md:col-span-2' : ''}>
                         <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
                         <input
@@ -148,11 +140,7 @@ const TransactionPage = () => {
                 </div>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
-                {[
-                    ['Cardholder Name', 'cardName'],
-                    ['Expiry Date', 'expiryDate', 'MM/YY'],
-                    ['CVV', 'cvv', '•••'],
-                ].map(([label, name, placeholder], idx) => (
+                {[['Cardholder Name', 'cardName'], ['Expiry Date', 'expiryDate', 'MM/YY'], ['CVV', 'cvv', '•••']].map(([label, name, placeholder], idx) => (
                     <div key={idx}>
                         <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
                         <input
@@ -177,9 +165,7 @@ const TransactionPage = () => {
                         onChange={handleInputChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:ring-green-500 focus:border-green-500"
                     />
-                    <button type="button" className="px-4 py-2 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300">
-                        Apply
-                    </button>
+                    <button type="button" className="px-4 py-2 bg-gray-200 text-gray-700 rounded-r-md hover:bg-gray-300">Apply</button>
                 </div>
             </div>
             <div className="mt-6">
@@ -291,7 +277,6 @@ const TransactionPage = () => {
                     <h1 className="text-3xl font-bold text-gray-800">Enrolment & Payment</h1>
                     <p className="text-gray-600 mt-2">Complete your enrolment to begin your journey</p>
                 </div>
-
                 {renderProgressSteps()}
                 <div className="mt-16">
                     {currentStep === 1 && renderStudentInformation()}
@@ -302,5 +287,11 @@ const TransactionPage = () => {
         </div>
     );
 };
+
+const TransactionPage = () => (
+    <Suspense fallback={<div className="text-center p-6">Loading...</div>}>
+        <TransactionPageInner />
+    </Suspense>
+);
 
 export default TransactionPage;
