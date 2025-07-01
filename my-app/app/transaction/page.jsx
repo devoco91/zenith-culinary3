@@ -7,7 +7,7 @@ const TransactionPageInner = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     
-   
+    // ✅ All hooks at top before conditional return
     const [showPage, setShowPage] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -17,7 +17,6 @@ const TransactionPageInner = () => {
         address: '',
         city: '',
         state: '',
-        zipCode: '',
         cardNumber: '',
         cardName: '',
         expiryDate: '',
@@ -106,7 +105,6 @@ const TransactionPageInner = () => {
                     ['Address', 'address', 2],
                     ['City', 'city'],
                     ['State', 'state'],
-                    ['Zip Code', 'zipCode'],
                 ].map(([label, name, span], idx) => (
                     <div key={idx} className={span === 2 ? 'md:col-span-2' : ''}>
                         <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
