@@ -174,7 +174,7 @@ export default function Testimonials() {
       {/* Testimonials Section */}
       <section className="py-16 bg-gray-100">
         <div className="w-[90%] mx-auto">
-          <h2 className="text-3xl font-bold mb-3">
+          <h2 className="text-3xl font-bold mb-3 mt-5">
             <span className="text-green-600">What Our</span>{' '}
             <span className="text-gray-800">Students Say</span>
           </h2>

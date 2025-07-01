@@ -1,25 +1,22 @@
-'use client'
-import { useState } from 'react'
-import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
-import Image from 'next/image'
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  
-  const toggleMenu = () => setIsOpen(!isOpen)
-  
-  // Function to close menu when a link is clicked
-  const closeMenu = () => setIsOpen(false)
-  
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
   const navLinks = [
     { name: 'About', path: '/about_us' },
     { name: 'Courses', path: '/courses' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Testimonials', path: '/testimonials' },
     { name: 'Contact', path: '/contact' },
-  ]
-  
+  ];
+
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50 py-3">
       <div className="w-[90%] mx-auto flex items-center justify-between">
@@ -28,15 +25,15 @@ export default function Navbar() {
           <Image
             src="/LASOP_png_for_culinary-removebg-preview.png"
             alt="Zenith Culinary Logo"
-            width={400}
-            height={80}
+            width={120}
+            height={40}
             priority
-            className="h-20 w-auto object-contain"
+            className="h-12 w-auto object-contain sm:h-16 md:h-20"
           />
         </Link>
-        
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex justify-center flex-1 space-x-6 text-base font-semibold">
+
+        {/* Desktop Nav Links - Centered */}
+        <div className="hidden md:flex flex-1 justify-center ml-8 space-x-6 text-base font-semibold">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -47,44 +44,47 @@ export default function Navbar() {
             </Link>
           ))}
         </div>
-        
+
         {/* CTA Button */}
         <div className="hidden md:flex">
-          <Link href="/signup" className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold">
+          <Link
+            href="/signup"
+            className="bg-green-600 text-white px-5 py-2 hover:bg-green-500 transition text-sm font-bold"
+          >
             Sign Up
           </Link>
         </div>
-        
+
         {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        <div className="md:hidden ml-4">
           <button onClick={toggleMenu}>
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
-      
+
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="md:hidden px-4 pb-4 space-y-4 text-base font-medium uppercase">
           {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.path} 
+            <Link
+              key={link.name}
+              href={link.path}
               className="block text-gray-700 hover:text-red-600 transition"
-              onClick={closeMenu} 
+              onClick={closeMenu}
             >
               {link.name}
             </Link>
           ))}
-          <Link 
-            href="/enroll" 
+          <Link
+            href="/transaction"
             className="block bg-green-600 text-white px-4 py-2 text-center font-semibold"
-            onClick={closeMenu} 
+            onClick={closeMenu}
           >
             Enroll Now
           </Link>
         </div>
       )}
     </nav>
-  )
+  );
 }

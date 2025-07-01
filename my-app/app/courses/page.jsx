@@ -54,7 +54,7 @@ export default function FeaturedCourses() {
       <div className="w-[90%] mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-3xl font-bold mb-3">
+            <h2 className="text-3xl font-bold mb-3 mt-5">
               <span className="text-green-600">Featured</span>{' '}
               <span className="text-gray-800">Courses</span>
             </h2>

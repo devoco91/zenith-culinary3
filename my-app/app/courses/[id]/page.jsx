@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function CourseDetails() {
   const { id } = useParams();
+  const router = useRouter();
+
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,12 +46,16 @@ export default function CourseDetails() {
     );
   }
 
-  // Build the URL with course info as query parameters
-  const transactionURL = `/transaction?courseId=${course._id}&courseTitle=${encodeURIComponent(
-    course.title
-  )}&coursePrice=${course.price}&courseDuration=${course.duration || ''}&courseStartDate=${
-    course.startDate || ''
-  }&courseDiscount=${course.discount || 0}`;
+  const handleEnroll = () => {
+    if (!course._id || !course.title) {
+      router.push('/courses'); // redirect safely
+      return;
+    }
+
+    router.push(
+      `/transaction?courseId=${course._id}&courseTitle=${encodeURIComponent(course.title)}&coursePrice=${course.price}&courseDuration=${course.duration || ''}&courseStartDate=${course.startDate || ''}&courseDiscount=${course.discount || 0}`
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-green-50 py-24 px-4 sm:px-6 lg:px-8 flex justify-center">
@@ -86,13 +92,13 @@ export default function CourseDetails() {
           }}
         />
 
-        {/* ✅ Updated Enroll button with query parameters */}
-        <a
-          href={transactionURL}
+     
+        <button
+          onClick={handleEnroll}
           className="inline-block bg-green-600 text-white font-semibold py-4 px-14 rounded-xl shadow-xl hover:bg-green-700 transition transform hover:scale-105 text-center"
         >
           Enroll Now
-        </a>
+        </button>
       </div>
     </div>
   );
