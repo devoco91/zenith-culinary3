@@ -7,6 +7,7 @@ const Gallery = ({ limit }) => {
 
   const fetchImages = async () => {
     try {
+      // const res = await fetch('http://localhost:5000/api/gallery');
       const res = await fetch('https://culinary-backend.fly.dev/api/gallery');
       const data = await res.json();
 
