@@ -75,7 +75,7 @@ const TransactionPageInner = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/transactions', {
+            const response = await fetch('https://culinary-backend.fly.dev/api/transactions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(transactionData),
