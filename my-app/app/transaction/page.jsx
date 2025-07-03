@@ -1,13 +1,13 @@
 'use client';
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import emailjs from '@emailjs/browser';
 import Link from 'next/link';
 
 const TransactionPageInner = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    
-    // ✅ All hooks at top before conditional return
+
     const [showPage, setShowPage] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -50,9 +50,40 @@ const TransactionPageInner = () => {
         });
     };
 
+    const validateStepData = () => {
+        if (currentStep === 1) {
+            const requiredFields = ['firstName', 'lastName', 'email', 'address', 'city', 'state'];
+            for (let field of requiredFields) {
+                if (!formData[field]?.trim()) {
+                    alert('Please fill all required fields before continuing.');
+                    return false;
+                }
+            }
+        }
+
+        if (currentStep === 2) {
+            const requiredFields = ['cardNumber', 'cardName', 'expiryDate', 'cvv'];
+            for (let field of requiredFields) {
+                if (!formData[field]?.trim()) {
+                    alert('Please complete all payment fields before submitting.');
+                    return false;
+                }
+            }
+
+            if (!formData.agreedToTerms) {
+                alert('You must agree to the Terms and Conditions.');
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     const handleNextStep = () => {
-        setCurrentStep(currentStep + 1);
-        window.scrollTo(0, 0);
+        if (validateStepData()) {
+            setCurrentStep(currentStep + 1);
+            window.scrollTo(0, 0);
+        }
     };
 
     const handlePrevStep = () => {
@@ -62,6 +93,8 @@ const TransactionPageInner = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateStepData()) return;
 
         const transactionData = {
             ...formData,
@@ -84,6 +117,20 @@ const TransactionPageInner = () => {
             const result = await response.json();
 
             if (response.ok) {
+                // SEND EMAIL AFTER SUCCESSFUL TRANSACTION
+                await emailjs.send(
+                    'service_90bids9',
+                    'template_xjk0npe',
+                    {
+                        firstName: formData.firstName,
+                        lastName: formData.lastName,
+                        email: formData.email,
+                        courseTitle,
+                        courseFee: coursePrice,
+                    },
+                    'jmMjHWm08bK1xNwwI'
+                );
+
                 setCurrentStep(3);
                 window.scrollTo(0, 0);
             } else {
@@ -91,8 +138,119 @@ const TransactionPageInner = () => {
             }
         } catch (error) {
             alert('Failed to submit. Please try again.');
+            console.error('Error:', error);
         }
     };
+
+
+    const renderCourseInfo = () => (
+        <div className="relative overflow-hidden">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 opacity-60"></div>
+
+            {/* Main container */}
+            <div className="relative bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl p-8 mb-8 hover:shadow-2xl transition-all duration-300">
+                {/* Header section */}
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-green-700 to-emerald-700 bg-clip-text text-transparent mb-3 leading-tight">
+                        {courseTitle}
+                    </h2>
+                    <p className="text-gray-600 text-lg font-light">Complete your enrollment to begin your culinary journey</p>
+                </div>
+
+                {/* Course details grid */}
+                <div className="max-w-2xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                        {/* Duration card */}
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-6">
+                            <div className="flex items-center mb-3">
+                                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">Duration</h3>
+                                    <p className="text-xl font-bold text-gray-900">{courseDuration}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Start date card */}
+                        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100 rounded-xl p-6">
+                            <div className="flex items-center mb-3">
+                                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">Start Date</h3>
+                                    <p className="text-xl font-bold text-gray-900">{new Date(courseStartDate).toLocaleDateString('en-US', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric'
+                                    })}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Pricing section */}
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 relative overflow-hidden">
+                        {/* Decorative elements */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-green-100 rounded-full -mr-16 -mt-16 opacity-50"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-emerald-100 rounded-full -ml-12 -mb-12 opacity-50"></div>
+
+                        <div className="relative z-10">
+                            <div className="text-center mb-6">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Course Investment</h3>
+                                <div className="w-16 h-0.5 bg-green-500 mx-auto"></div>
+                            </div>
+
+                            <div className="flex items-center justify-center space-x-4 mb-6">
+                                {courseDiscount > 0 && (
+                                    <div className="text-center">
+                                        <p className="text-sm text-gray-500 mb-1">Original Price</p>
+                                        <p className="text-2xl text-gray-400 line-through font-light">₦{coursePrice.toLocaleString()}</p>
+                                    </div>
+                                )}
+
+                                <div className="text-center">
+                                    <p className="text-sm text-gray-600 mb-1">
+                                        {courseDiscount > 0 ? 'Special Price' : 'Course Fee'}
+                                    </p>
+                                    <p className="text-4xl font-bold text-green-600">
+                                        ₦{(coursePrice - courseDiscount).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {courseDiscount > 0 && (
+                                <div className="bg-white/80 backdrop-blur-sm border border-green-200 rounded-xl p-4 text-center">
+                                    <div className="flex items-center justify-center space-x-2 mb-2">
+                                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span className="text-green-700 font-semibold">You Save</span>
+                                    </div>
+                                    <p className="text-2xl font-bold text-green-600">₦{courseDiscount.toLocaleString()}</p>
+                                    <p className="text-sm text-green-600 mt-1">Limited time offer!</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 
     const renderStudentInformation = () => (
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
@@ -258,11 +416,10 @@ const TransactionPageInner = () => {
                         <React.Fragment key={step.number}>
                             <div className="flex items-center relative">
                                 <div
-                                    className={`w-10 h-10 rounded-full flex items-center justify-center z-10 relative ${
-                                        currentStep >= step.number
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center z-10 relative ${currentStep >= step.number
                                             ? 'bg-green-600 text-white'
                                             : 'bg-gray-200 text-gray-600'
-                                    }`}
+                                        }`}
                                 >
                                     {currentStep > step.number ? (
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,9 +436,8 @@ const TransactionPageInner = () => {
                             {index < steps.length - 1 && (
                                 <div className="flex-auto border-t-2 border-gray-300 mx-6">
                                     <div
-                                        className={`border-t-2 ${
-                                            currentStep > step.number ? 'border-green-600' : 'border-transparent'
-                                        }`}
+                                        className={`border-t-2 ${currentStep > step.number ? 'border-green-600' : 'border-transparent'
+                                            }`}
                                     ></div>
                                 </div>
                             )}
@@ -299,6 +455,8 @@ const TransactionPageInner = () => {
                     <h1 className="text-3xl font-bold text-gray-800">Enrolment & Payment</h1>
                     <p className="text-gray-600 mt-2">Complete your enrolment to begin your journey</p>
                 </div>
+
+                {renderCourseInfo()}
 
                 {renderProgressSteps()}
                 <div className="mt-16">
