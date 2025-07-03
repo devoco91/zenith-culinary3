@@ -160,7 +160,6 @@ const TransactionPageInner = () => {
                     <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-green-700 to-emerald-700 bg-clip-text text-transparent mb-3 leading-tight">
                         {courseTitle}
                     </h2>
-                    <p className="text-gray-600 text-lg font-light">Complete your enrollment to begin your culinary journey</p>
                 </div>
 
                 {/* Course details grid */}
