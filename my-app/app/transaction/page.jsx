@@ -162,26 +162,11 @@ const TransactionPageInner = () => {
                     </h2>
                 </div>
 
-                {/* Course details grid */}
-                <div className="max-w-5xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-6 mb-8">
-                        {/* Duration Card */}
-                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-6">
-                            <div className="flex items-center mb-3">
-                                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">Duration</h3>
-                                    <p className="text-xl font-bold text-gray-900">{courseDuration}</p>
-                                </div>
-                            </div>
-                        </div>
-
+                {/* Course details - Pricing only */}
+                <div className="max-w-3xl mx-auto">
+                    <div className="flex justify-center mb-8">
                         {/* Pricing Section */}
-                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 relative overflow-hidden">
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 relative overflow-hidden w-full max-w-md">
                             <div className="relative z-10">
                                 <div className="text-center mb-6">
                                     <h3 className="text-lg font-semibold text-gray-800 mb-2">Course Investment</h3>
