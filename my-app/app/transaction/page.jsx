@@ -28,7 +28,7 @@ const TransactionPageInner = () => {
     const courseId = searchParams.get('courseId');
     const courseTitle = searchParams.get('courseTitle');
     const courseStartDate = searchParams.get('courseStartDate') || '2025-07-10';
-    const courseDuration = searchParams.get('courseDuration') || '3 Months';
+    const courseDuration = searchParams.get('courseDuration')?.trim() || '12 Weeks'; // Handle empty strings and extract from title if needed
     const coursePrice = parseInt(searchParams.get('coursePrice')) || 0;
     const courseDiscount = parseInt(searchParams.get('courseDiscount')) || 0;
 
