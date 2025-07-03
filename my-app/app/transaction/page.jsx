@@ -164,9 +164,9 @@ const TransactionPageInner = () => {
                 </div>
 
                 {/* Course details grid */}
-                <div className="max-w-2xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                     <div className="grid md:grid-cols-2 gap-6 mb-8">
-                        {/* Duration card */}
+                        {/* Duration Card */}
                         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-6">
                             <div className="flex items-center mb-3">
                                 <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
@@ -181,73 +181,51 @@ const TransactionPageInner = () => {
                             </div>
                         </div>
 
-                        {/* Start date card */}
-                        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-100 rounded-xl p-6">
-                            <div className="flex items-center mb-3">
-                                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
+                        {/* Pricing Section */}
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 relative overflow-hidden">
+                            <div className="relative z-10">
+                                <div className="text-center mb-6">
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">Course Investment</h3>
+                                    <div className="w-16 h-0.5 bg-green-500 mx-auto"></div>
                                 </div>
-                                <div>
-                                    <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">Start Date</h3>
-                                    <p className="text-xl font-bold text-gray-900">{new Date(courseStartDate).toLocaleDateString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                        year: 'numeric'
-                                    })}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Pricing section */}
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 relative overflow-hidden">
-                        {/* Decorative elements */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-green-100 rounded-full -mr-16 -mt-16 opacity-50"></div>
-                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-emerald-100 rounded-full -ml-12 -mb-12 opacity-50"></div>
+                                <div className="flex items-center justify-center space-x-4 mb-6">
+                                    {courseDiscount > 0 && (
+                                        <div className="text-center">
+                                            <p className="text-sm text-gray-500 mb-1">Original Price</p>
+                                            <p className="text-2xl text-gray-400 line-through font-light">₦{coursePrice.toLocaleString()}</p>
+                                        </div>
+                                    )}
 
-                        <div className="relative z-10">
-                            <div className="text-center mb-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Course Investment</h3>
-                                <div className="w-16 h-0.5 bg-green-500 mx-auto"></div>
-                            </div>
-
-                            <div className="flex items-center justify-center space-x-4 mb-6">
-                                {courseDiscount > 0 && (
                                     <div className="text-center">
-                                        <p className="text-sm text-gray-500 mb-1">Original Price</p>
-                                        <p className="text-2xl text-gray-400 line-through font-light">₦{coursePrice.toLocaleString()}</p>
+                                        <p className="text-sm text-gray-600 mb-1">
+                                            {courseDiscount > 0 ? 'Special Price' : 'Course Fee'}
+                                        </p>
+                                        <p className="text-4xl font-bold text-green-600">
+                                            ₦{(coursePrice - courseDiscount).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {courseDiscount > 0 && (
+                                    <div className="bg-white/80 backdrop-blur-sm border border-green-200 rounded-xl p-4 text-center">
+                                        <div className="flex items-center justify-center space-x-2 mb-2">
+                                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </div>
+                                            <span className="text-green-700 font-semibold">You Save</span>
+                                        </div>
+                                        <p className="text-2xl font-bold text-green-600">₦{courseDiscount.toLocaleString()}</p>
+                                        <p className="text-sm text-green-600 mt-1">Limited time offer!</p>
                                     </div>
                                 )}
-
-                                <div className="text-center">
-                                    <p className="text-sm text-gray-600 mb-1">
-                                        {courseDiscount > 0 ? 'Special Price' : 'Course Fee'}
-                                    </p>
-                                    <p className="text-4xl font-bold text-green-600">
-                                        ₦{(coursePrice - courseDiscount).toLocaleString()}
-                                    </p>
-                                </div>
                             </div>
-
-                            {courseDiscount > 0 && (
-                                <div className="bg-white/80 backdrop-blur-sm border border-green-200 rounded-xl p-4 text-center">
-                                    <div className="flex items-center justify-center space-x-2 mb-2">
-                                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
-                                        <span className="text-green-700 font-semibold">You Save</span>
-                                    </div>
-                                    <p className="text-2xl font-bold text-green-600">₦{courseDiscount.toLocaleString()}</p>
-                                    <p className="text-sm text-green-600 mt-1">Limited time offer!</p>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     );
@@ -417,8 +395,8 @@ const TransactionPageInner = () => {
                             <div className="flex items-center relative">
                                 <div
                                     className={`w-10 h-10 rounded-full flex items-center justify-center z-10 relative ${currentStep >= step.number
-                                            ? 'bg-green-600 text-white'
-                                            : 'bg-gray-200 text-gray-600'
+                                        ? 'bg-green-600 text-white'
+                                        : 'bg-gray-200 text-gray-600'
                                         }`}
                                 >
                                     {currentStep > step.number ? (
